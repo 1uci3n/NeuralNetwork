@@ -2,7 +2,7 @@
 * @Author: 1uci3n
 * @Date:   2018-05-27 19:06:06
 * @Last Modified by:   1uci3n
-* @Last Modified time: 2018-05-28 13:27:54
+* @Last Modified time: 2018-05-28 21:15:30
 */
 #include "NeuralNetwork.h"
 
@@ -50,6 +50,27 @@ vector<vector <vector<int> > > getFormatDataGroupFromFile(string filepath){
 			dataEnd = formatData.end();
 		}
 	}
-	//cout << ((formatDataGroup.at(0)).at(0)).at(0) << endl;
 	return formatDataGroup;
+}
+
+vector<vector<int> > formatDataToOneRow(vector<vector <vector<int> > > dataGroup){
+	vector<vector<int> > formatDatas;
+	vector<int> data(256);
+	int dataIndex = 0;
+	vector<vector<int> >::iterator it = formatDatas.end();
+	for (std::vector<vector<vector<int> > >::iterator i = dataGroup.begin(); i != dataGroup.end(); ++i)
+	{
+		for (int j = 0; j < 16; ++j)
+		{
+			for (int k = 0; k < 16; ++k)
+			{
+				data[dataIndex] = (*i)[j][k];
+				dataIndex++;
+			}
+		}
+		formatDatas.insert(it, data);
+		it = formatDatas.end();
+		dataIndex = 0;
+	}
+	return formatDatas;
 }
