@@ -15,6 +15,6 @@ std::vector<std::vector <std::vector<int> > > getFormatDataGroupFromFile(std::st
 
 std::vector<std::vector<int> > formatDataToOneRow(std::vector<std::vector <std::vector<int> > > dataGroup);
 
-void trans(std::vector <std::vector<int> > datas, int tn);
+void training(std::vector <std::vector<int> > datas, int tn);
 
 void test(std::vector <std::vector<int> > datas, int tn);

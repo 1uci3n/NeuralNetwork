@@ -2,18 +2,19 @@
 * @Author: 1uci3n
 * @Date:   2018-05-28 16:36:26
 * @Last Modified by:   1uci3n
-* @Last Modified time: 2018-05-28 22:27:27
+* @Last Modified time: 2018-05-29 13:04:32
 */
 #include "NeuralNetwork.h"
 
 #define TRAINING_DATA_COUNT 100
 #define T_FOR_ZERO -1
 #define T_FOR_ONE 1
+#define ERROR_BOUND 1
 
 using namespace std;
 
-//weight value
-vector<double> w(256,10);
+//initial weight value
+vector<double> w(256, 0);
 
 int main(int argc, char const *argv[])
 {
@@ -22,16 +23,20 @@ int main(int argc, char const *argv[])
 	vector<vector <vector<int> > > data1 = getFormatDataGroupFromFile("sample/data1.dat");
 	vector<vector<int> > formatData0 = formatDataToOneRow(data0);
 	vector<vector<int> > formatData1 = formatDataToOneRow(data1);
-	cout << "开始训练" << endl;
-	trans(formatData0, T_FOR_ZERO);
-	trans(formatData1, T_FOR_ONE);
-	cout << "开始识别" << endl;
+	cout << "----訓練スタート----" << endl;
+	cout << "0の訓練スタート" <<endl;
+	training(formatData0, T_FOR_ZERO);
+	cout << "1の訓練スタート" <<endl;
+	training(formatData1, T_FOR_ONE);
+	cout << "----識別スタート----" << endl;
+	cout << "0の";
 	test(formatData0, T_FOR_ZERO);
+	cout << "1の";
 	test(formatData1, T_FOR_ONE);
 	return 0;
 }
 
-void trans(vector <vector<int> > datas, int tn){
+void training(vector <vector<int> > datas, int tn){
 	vector<int> data;
 	vector<int> errorIndex;
 	int countError = 0;
@@ -64,8 +69,8 @@ void trans(vector <vector<int> > datas, int tn){
 			}
 			errorSum = abs(errorSum);
 		}
-		cout << tn <<"错误有" << errorIndex.size() << "个" << endl;
-		if(((errorSum/errorIndex.size()) < 0.01) || errorIndex.size() == 0){
+		cout << "誤りは" << errorIndex.size() << "個" << endl;
+		if(((errorSum/errorIndex.size()) < ERROR_BOUND) || errorIndex.size() == 0){
 			break;
 		}
 		errorSum = 0;
@@ -88,9 +93,9 @@ void test(vector <vector<int> > datas, int tn){
 		if((result * tn) < 0){
 			sumErr ++;
 		}
-		cout << result << endl;
+		//cout << result << endl;
 		result = 0;
 	}
-	cout << "识别错误率为" << sumErr / 60 << endl;
+	cout << "識別の誤り率は" << sumErr / 60 << endl;
 }
 
