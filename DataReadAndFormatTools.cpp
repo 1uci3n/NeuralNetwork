@@ -2,18 +2,15 @@
 * @Author: 1uci3n
 * @Date:   2018-05-27 19:06:06
 * @Last Modified by:   1uci3n
-* @Last Modified time: 2018-05-28 21:15:30
+* @Last Modified time: 2018-05-30 14:59:55
 */
 #include "NeuralNetwork.h"
 
 using namespace std;
 
 vector<vector <vector<int> > > getFormatDataGroupFromFile(string filepath){
-	//用来存储多组手写数字
 	vector<vector <vector<int> > > formatDataGroup;
-	//存储一个手写数字,按行存储
 	vector< vector<int> > formatData;
-	//
 	vector<int> row(16);
 	vector<vector <int> >::iterator dataEnd = formatData.end();
 	vector<vector <vector<int> > >::iterator groupEnd = formatDataGroup.end();
