@@ -2,7 +2,7 @@
 * @Author: 1uci3n
 * @Date:   2018-05-28 16:36:26
 * @Last Modified by:   1uci3n
-* @Last Modified time: 2018-05-30 14:43:27
+* @Last Modified time: 2018-05-30 17:01:57
 */
 #include "NeuralNetwork.h"
 
@@ -54,7 +54,7 @@ void initW(){
 void training(vector <vector<int> > datas, int tn){
 	//use this to temporarily store data 
 	vector<int> data;
-	//use this to  store error's index
+	//use this to store error data's index
 	vector<int> errorIndex;
 	//use this to count error
 	int countError = 0;
@@ -62,24 +62,31 @@ void training(vector <vector<int> > datas, int tn){
 	double errorSum = 0;
 	//use this to temporarily store result in the loop
 	double result = 0;
+	//errorIndex's iterator,it help to insert the error index
 	vector<int>::iterator it = errorIndex.end();
 	//training loop start
 	while(true){
 		for (int i = 0; i < TRAINING_DATA_COUNT; ++i)
 		{
+			//get a data from group
 			data = datas[i];
+			//calculate the result of data * w
 			for (int j = 0; j < 256; ++j)
 			{
 				result += data[j] * w[j];
 			}
+			//Judge result is correct or wrong
 			if ((result * tn) < 0)
 			{
+				//if get a error result,recover this data's index
 				errorIndex.insert(it, i);
+				//let the iterator to end;
 				it = errorIndex.end();
 			}
+			//reset the result
 			result = 0;
 		}
-
+		//use a loop to calculate the error value's sum
 		for (vector<int>::iterator i = errorIndex.begin(); i != errorIndex.end(); ++i)
 		{
 			data = datas[*i];
@@ -88,14 +95,21 @@ void training(vector <vector<int> > datas, int tn){
 				w[j] += tn * data[j];
 				errorSum += data[j] * w[j];
 			}
+			//get the absolute value of sum
 			errorSum = abs(errorSum);
 		}
 		cout << "誤りは" << errorIndex.size() << "個" << endl;
 		if(((errorSum/errorIndex.size()) < ERROR_BOUND) || errorIndex.size() == 0){
+			//if value of sum less than ERROR_BOUND(エラーの結果の限界)
+			//or there no error result
+			//break training loop
 			break;
 		}
+		//reset the errorSum
 		errorSum = 0;
+		//reset the errorIndex
 		vector <int>().swap(errorIndex);
+		//reset the iterator of errorIndex
 		it = errorIndex.end();
 	}	
 }
